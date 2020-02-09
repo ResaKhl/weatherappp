@@ -1,0 +1,77 @@
+.App {
+  text-align: center;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.inputlabel{
+  position: relative;
+  margin-right: 10px;
+  left:0;
+}
+.weatherform{
+  border: 1px solid black;
+  width: 600px;
+  height: 32em;
+  position: relative;
+  top: 2em;
+  left: 23em;
+  background-color: #61dafb;
+}
+.inputpart{
+  position: relative;
+  margin-bottom: 10px;
+  left: 0px;
+}
+.inputpart{
+  margin: 1em;
+}
+.userspart{
+  border: 2px dotted gray;
+  position: relative;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5em;
+}
+.submitbutton{
+  margin: 1em;
+}
+table{
+  border-collapse: collapse;
+}
+th{
+  border: 1px solid black;
+  margin: 1px;
+}
+td{
+  border: 1px solid black;
+  margin: 1px;
+}
+#posttile{
+  width: 20em;
+}
+#postbody{
+  width: 59em;
+}
+.sectionnav{
+  margin: 2em;
+  display: inline;
+}
+.retrieved-data{
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5%;
+}
