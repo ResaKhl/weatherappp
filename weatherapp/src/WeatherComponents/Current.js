@@ -19,7 +19,6 @@ export default class Current extends Component {
                 this.setState({city: data.results[0].components.city,
                      state: data.results[0].components.state})
             })
-
     }
     render(){
         return (

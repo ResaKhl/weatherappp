@@ -44,6 +44,12 @@ app.get('/jokes/random', (req, res) => {
 app.get('/weather/lat/:latval/long/:long', (req, res, next) => {
   const url = `https://api.darksky.net/forecast/30e2008420c9a9199fe93fdc8f7ad223/`
   console.log('kos', req.params)
+  // fetch('http://ip-api.com/json').then(res=>res.json()).then(data=>request(`${url}${data.lat},${data.lon}`, (error, response, body)=>{
+  //   if (error || response.statusCode !== 200) {
+  //     return res.status(500).json({ type: 'error', message: err.message });
+  //   }
+  //   res.send(JSON.parse(body));
+  // }))
   fetch('http://ip-api.com/json').then(res=>res.json()).then(data=>request(`${url}${data.lat},${data.lon}`, (error, response, body)=>{
     if (error || response.statusCode !== 200) {
       return res.status(500).json({ type: 'error', message: err.message });
@@ -51,6 +57,31 @@ app.get('/weather/lat/:latval/long/:long', (req, res, next) => {
     res.send(JSON.parse(body));
   }))
 });
+
+app.get('/weather/street/:street/city/:city/state/:state', (req, res, next) => {
+  const url = `https://api.darksky.net/forecast/30e2008420c9a9199fe93fdc8f7ad223/`
+  console.log('kos', req.params)
+  // fetch('http://ip-api.com/json').then(res=>res.json()).then(data=>request(`${url}${data.lat},${data.lon}`, (error, response, body)=>{
+  //   if (error || response.statusCode !== 200) {
+  //     return res.status(500).json({ type: 'error', message: err.message });
+  //   }
+  //   res.send(JSON.parse(body));
+  // }))
+  let query = req.params.street.split(' ').join('%20').concat('%20'+req.params.city+'%20').concat('%20'+req.params.state+'%20');
+
+  let uri =`https://us1.locationiq.com/v1/search.php?key=a5250f755c1a6e&q=${query}&format=json`
+  console.log(req,query,uri, 'kiiirkos');
+  fetch(uri).then(res=>res.json()).then(data=>{
+    console.log('kuluch', data, 'kuluch')
+    request(`${url}${data[0].lat},${data[0].lon}`, (error, response, body)=>{
+    if (error || response.statusCode !== 200) {
+      return res.status(500).json({ type: 'error', message: err.message });
+    }
+    res.send(JSON.parse(body));
+  })
+})
+});
+
 
 app.post('/posts/',(req, res, next)=>{
   console.log('kos');

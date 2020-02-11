@@ -12,13 +12,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Posts from "./WeatherComponents/Posts";
 import { Button } from 'react-bootstrap';
 import Current from './WeatherComponents/Current';
+import Hourly from './WeatherComponents/Hourly';
+
 
 export class Home extends Component{
   constructor(props){
     super(props);
     this.state = {
-      street:'Shoup Ave',
-      city:'Los Angeles',
+      street:'',
+      city:'',
       lat:'',
       long:'',
       states:['Select','Alabama','Alaska','American Samoa','Arizona','Arkansas',
@@ -48,6 +50,7 @@ export class Home extends Component{
     this.submitform = this.submitform.bind(this);
     this.updatelatlong = this.updatelatlong.bind(this);
     this.submitPostlatlong = this.submitPostlatlong.bind(this);
+    this.textInputStreet = React.createRef();
   }
 
   updateStreet(e){
@@ -84,6 +87,7 @@ export class Home extends Component{
     })
   }
   componentDidMount(){
+    this.textInputStreet.current.focus();
     fetch('http://jsonplaceholder.typicode.com/users')
       .then(res=>res.json())
       .then((data)=>{
@@ -131,13 +135,13 @@ export class Home extends Component{
           <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroup-sizing-sm">street</span>
           </div>
-          <input className='form-control inputform col-sm-3' onChange={this.updateStreet} value={this.state.street}></input>
+          <input className='form-control inputform col-sm-3' onChange={this.updateStreet} value={this.state.street} ref={this.textInputStreet} placeholder='Shoup Ave'></input>
           </div>
           <div id='city' className='inputpart input-group mb-3'>
           <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroup-sizing-sm">city</span>
           </div>
-          <input className='form-control inputform col-sm-3' onChange={this.updateCity} value={this.state.city}></input>
+          <input className='form-control inputform col-sm-3' onChange={this.updateCity} value={this.state.city} placeholder='Los Angeles'></input>
           </div>
           <div className='inputpart' style={{marginLeft:'-22em'}}>
           <label className='inputlabel form-group' style={{display:'inline'}}>state</label>
@@ -242,10 +246,6 @@ export class Home extends Component{
       </div>
     );
   }
-}
-
-function Hourly(props) {
-  return <h2>Hourly</h2>;
 }
 
 function Weekly(props) {
