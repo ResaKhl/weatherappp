@@ -72,8 +72,8 @@ export class Home extends Component{
   updateClear(e){
     e.preventDefault();
     this.setState({
-      street:'Shoup Ave',
-      city:'Los Angeles',
+      street:'',
+      city:'',
       currState : 'Select',
       currLoc: false,
   })
@@ -96,16 +96,28 @@ export class Home extends Component{
       .catch(console.log)
   }
   submitform(e){
+    // e.preventDefault();
+    // fetch('http://localhost:5000/api/pilots')
+    //   .then(res=>res.json())
+    //   .then((data)=>{
+    //     this.setState({
+    //       customers:data, 
+    //       loadingcustomers:false
+    //     })
+    //     console.log(data);
+    //   })
     e.preventDefault();
-    fetch('http://localhost:5000/api/customers')
-      .then(res=>res.json())
-      .then((data)=>{
-        this.setState({
-          customers:data, 
-          loadingcustomers:false
-        })
+    let street = this.state.street.split(' ').join('%20')
+    // http://localhost:5000/weather/street/1514%20NW%2052ndstreet/city/seattle/state/washington
+    const uri = `http://localhost:5000/weather/street/${street}/city/${this.state.city}/state/${this.state.currState}`
+    fetch(uri).then(res=>res.json())
+      .then((data)=>
+      {this.setState({
+        fetchedweather : true,
+        weatherstates:data});
         console.log(data);
-      })
+      }
+    )
   }
   submitPostlatlong(e){
     e.preventDefault();
@@ -132,16 +144,16 @@ export class Home extends Component{
           <h1>Weather Search</h1>
 
           <div id='street' className='inputpart input-group mb-3'>
-          <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">street</span>
+          <div className="input-group-prepend">
+          <span className="input-group-text" id="inputGroup-sizing-sm">street</span>
           </div>
-          <input className='form-control inputform col-sm-3' onChange={this.updateStreet} value={this.state.street} ref={this.textInputStreet} placeholder='Shoup Ave'></input>
+          <input className='form-control inputform col-sm-10' onChange={this.updateStreet} value={this.state.street} ref={this.textInputStreet} placeholder='Shoup Ave'></input>
           </div>
           <div id='city' className='inputpart input-group mb-3'>
-          <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">city</span>
+          <div className="input-group-prepend">
+          <span className="input-group-text" id="inputGroup-sizing-sm">city</span>
           </div>
-          <input className='form-control inputform col-sm-3' onChange={this.updateCity} value={this.state.city} placeholder='Los Angeles'></input>
+          <input className='form-control inputform col-sm-6' onChange={this.updateCity} value={this.state.city} placeholder='Los Angeles'></input>
           </div>
           <div className='inputpart' style={{marginLeft:'-22em'}}>
           <label className='inputlabel form-group' style={{display:'inline'}}>state</label>
@@ -160,19 +172,19 @@ export class Home extends Component{
           </div>
 
           <div className='inputpart input-group mb-3'>
-          <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">lat</span>
+          <div className="input-group-prepend">
+          <span className="input-group-text" id="inputGroup-sizing-sm">lat</span>
           </div>
           <input className='form-control inputform col-sm-3' onChange={this.updatelatlong} value={this.state.lat} name='lat'></input>
           </div><div className='inputpart input-group mb-3'>
-          <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">long</span>
+          <div className="input-group-prepend">
+          <span className="input-group-text" id="inputGroup-sizing-sm">long</span>
           </div>
           <input className='form-control inputform col-sm-3' onChange={this.updatelatlong} value={this.state.long} name='long'></input>
           </div>
-          <div class="container">
+          <div className="container">
           <input type='submit' className='submitbutton btn btn-success btn-sm col-sm-3' value='Submitlatlong' onClick={this.submitPostlatlong} />
-          <input type='submit' className='submitbutton btn btn-success btn-sm col-sm-3' id='submit' value='Submit' onClick={this.submitform} />
+          <input type='submit' className='submitbutton btn btn-success btn-sm col-sm-4' id='submit' value='Submit physical address' onClick={this.submitform} />
           <input type='submit' className='submitbutton btn btn-success btn-sm col-sm-3' id ='clear' value='clear' onClick={this.updateClear}/>
           </div>
         </form>
@@ -187,7 +199,7 @@ export class Home extends Component{
         {rendercustomer ? <h3>is loading...</h3>:
         <table>
         <tbody>
-          {this.state.customers.map((cust, id)=><CustBlock user={cust}></CustBlock>)}
+            <tr><td>{this.state.customers.map((cust, id)=><CustBlock user={cust}></CustBlock>)}</td></tr>
         </tbody>
         </table> 
         }
@@ -254,7 +266,7 @@ function Weekly(props) {
 
 
 
-const TableRow = (props)=> {
+export const TableRow = (props)=> {
   return <tr>
     <td>{props.user.id}</td>
     <td>{props.user.name}</td>
@@ -263,7 +275,7 @@ const TableRow = (props)=> {
   </tr>;
 }
 
-const CustBlock = (props) => {
+export const CustBlock = (props) => {
   return <tr>
     <td>{props.user.id}</td>
     <td>{props.user.firstName}</td>

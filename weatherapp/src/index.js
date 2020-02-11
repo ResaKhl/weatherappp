@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Home from './App';
 import MyComponent from "./WeatherComponents/Posts";
 import Post from "./WeatherComponents/singlepost";
+import Users from "./WeatherComponents/Users";
 
 import {
     BrowserRouter as Router,
@@ -21,6 +22,18 @@ ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
 
 export default function App() {
+  const [users, setUsers] = useState([]);
+  useEffect(()=>{
+    console.log('gavvvvvvvvvvvvv');
+    fetch('http://jsonplaceholder.typicode.com/users')
+      .then(res=>res.json())
+      .then((data)=>{
+        this.setState({users:data});
+        console.log('tokhm', data)
+      })
+      .catch(console.log);
+  });
+  console.log(users, 'loooooooooooooooooo');
     return (
       <Router>
         <div>
@@ -54,7 +67,7 @@ export default function App() {
               <About />
             </Route>
             <Route path="/users">
-              <Users />
+              <Users users={users}/>
             </Route>
             <Route path="/">
               <Home />
@@ -67,10 +80,6 @@ export default function App() {
   
   function About() {
     return <h2>About</h2>;
-  }
-  
-  function Users() {
-    return <h2>Users</h2>;
   }
 
   function Posts() {

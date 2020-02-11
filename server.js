@@ -67,7 +67,7 @@ app.get('/weather/street/:street/city/:city/state/:state', (req, res, next) => {
   //   }
   //   res.send(JSON.parse(body));
   // }))
-  let query = req.params.street.split(' ').join('%20').concat('%20'+req.params.city+'%20').concat('%20'+req.params.state+'%20');
+  let query = req.params.street.concat('%20'+req.params.city+'%20').concat('%20'+req.params.state+'%20');
 
   let uri =`https://us1.locationiq.com/v1/search.php?key=a5250f755c1a6e&q=${query}&format=json`
   console.log(req,query,uri, 'kiiirkos');

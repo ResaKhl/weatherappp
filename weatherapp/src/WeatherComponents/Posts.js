@@ -20,9 +20,6 @@ class Posts extends Component{
             .then(res=>res.json())
             .then(posts=>{this.setState({isLoaded:true,posts})});
     }
-    showPost(){
-        
-    }
     render(){
         const {posts, isLoaded} = this.state;
         console.log('**********');
