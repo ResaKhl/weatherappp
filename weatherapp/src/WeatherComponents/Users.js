@@ -4,7 +4,7 @@ import './Users.css';
 import '../App.css';
 import {TableRow} from '../App';
 const Users=(props)=>{
-    // console.log('users is kos', props.users.data)
+    // console.log('users is kol', props.users.data)
     // console.log(props)
     const [data, setData] = useState([]);
     useEffect(()=>{async function fetchdata(){

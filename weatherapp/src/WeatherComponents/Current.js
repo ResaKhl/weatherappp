@@ -15,7 +15,7 @@ export default class Current extends Component {
             .then(res=>res.json())
             .then(data=>{
                 console.log(data.results[0].components.city, data.results[0].components.state)
-                console.log('kossssssssssssssssssss')
+                console.log('kollllssssssssssssssss')
                 this.setState({city: data.results[0].components.city,
                      state: data.results[0].components.state})
             })

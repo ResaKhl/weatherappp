@@ -67,7 +67,13 @@ export class Home extends Component{
   }
   updateCurrloc(e){
     e.preventDefault();
-    this.setState({currLoc:!this.state.currLoc});
+    console.log('male khar');
+    this.setState({
+      currLoc:!this.state.currLoc,
+      street:'',
+      city:'',
+      currState : 'Select',
+    });
   }
   updateClear(e){
     e.preventDefault();
@@ -96,28 +102,35 @@ export class Home extends Component{
       .catch(console.log)
   }
   submitform(e){
-    // e.preventDefault();
-    // fetch('http://localhost:5000/api/pilots')
-    //   .then(res=>res.json())
-    //   .then((data)=>{
-    //     this.setState({
-    //       customers:data, 
-    //       loadingcustomers:false
-    //     })
-    //     console.log(data);
-    //   })
     e.preventDefault();
-    let street = this.state.street.split(' ').join('%20')
-    // http://localhost:5000/weather/street/1514%20NW%2052ndstreet/city/seattle/state/washington
-    const uri = `http://localhost:5000/weather/street/${street}/city/${this.state.city}/state/${this.state.currState}`
-    fetch(uri).then(res=>res.json())
-      .then((data)=>
-      {this.setState({
-        fetchedweather : true,
-        weatherstates:data});
-        console.log(data);
-      }
-    )
+    if(this.state.currLoc){
+    fetch('http://ip-api.com/json')
+      .then(res=>res.json())
+      .then((data)=>{
+        const uri = `http://localhost:5000/weather/lat/${data.lat}/long/${data.lon}`
+        fetch(uri).then(res=>res.json())
+          .then((data)=>
+          {this.setState({
+            fetchedweather : true,
+            weatherstates:data});
+            console.log(data);
+          });
+  console.log(data);} 
+      )
+    }
+    else{
+      let street = this.state.street.split(' ').join('%20');
+      // http://localhost:5000/weather/street/1514%20NW%2052ndstreet/city/seattle/state/washington
+      const uri = `http://localhost:5000/weather/street/${street}/city/${this.state.city}/state/${this.state.currState}`
+      fetch(uri).then(res=>res.json())
+        .then((data)=>
+        {this.setState({
+          fetchedweather : true,
+          weatherstates:data});
+          console.log(data);
+        }
+      )
+    }
   }
   submitPostlatlong(e){
     e.preventDefault();
@@ -164,7 +177,13 @@ export class Home extends Component{
 
           <div className='inputpart form-check' style={{marginLeft:'-25em'}}>
           <label className='current-Location form-check-label'>
-          <input name='currentLocation' className='form-check-input' type='checkbox' onChange={this.state.updateCurrloc} 
+          <input name='currentLocation' className='form-check-input' type='checkbox' onChange={(e)=>{console.log('male khar');
+          this.setState({
+            currLoc:e.target.checked,
+            street:'',
+            city:'',
+            currState : 'Select',
+          })}} 
           value={this.state.currLoc}>
           </input>
           current-Location
@@ -204,22 +223,12 @@ export class Home extends Component{
         </table> 
         }
         </div>
-        <div className='userspart' id='customers'>
-        {!this.state.fetchedweather ? <h3>is loading weather status...</h3> :
-        <table>
-        <tbody>
-          {/* {this.state.weatherstates.map((cust, id)=><CustBlock user={cust}></CustBlock>)} */}
-          <tr><td>{weatherstates.currently.apparentTemperature}</td></tr>
-        </tbody>
-        </table> 
-        }
-        </div>
-        <div>
+        {/* <div>
           <h1 style={testStyle}>Test</h1>
           <h5>street value is:</h5>{this.state.street}
           <h5>city value is:</h5>{this.state.city}
           <h5>currState value is:</h5>{this.state.currState}
-        </div>
+        </div> */}
         {!this.state.fetchedweather ? <h3>is loading weather status...</h3> :
         <div>
           <Router>
