@@ -3,6 +3,8 @@ import {Chart} from 'chart.js';
 
 function Hourly(props){
     const reftocanvas = useRef(null);
+    const tabs = ['Temperature', 'Pressure', 'Humidity', 'Ozone', 'Visibility', 'Wind Speed'];
+    let currTab = 'Temperature';
     useEffect(()=>{
         const can = reftocanvas.current;
         console.log(can)
@@ -13,9 +15,9 @@ function Hourly(props){
         const bordc = [];
         // h in props.weatherinfo.hourly.data
         // props.weatherinfo.hourly.data.temperature
-        for (let i=0;i<props.weatherinfo.hourly.data.length;i++){
+        for (let i=0;i<props.weatherinfo.hourly.data.length && i<20;i++){
             data.push(props.weatherinfo.hourly.data[i].temperature);
-            labels.push('');
+            labels.push(`${i}`);
             bgc.push('rgba(54, 162, 235, 0.2)');
             bordc.push('rgba(54, 162, 235, 1)');
         }
@@ -38,6 +40,20 @@ function Hourly(props){
                     yAxes: [{
                         ticks: {
                             beginAtZero: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '% Temperature'
+                        }
+                    }]
+                    ,
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time Difference From Our Current Tab'
                         }
                     }]
                 }
@@ -46,6 +62,7 @@ function Hourly(props){
     });
     return(
         <div>
+        
         <canvas id="myChart" width="400" height="400" aria-label="Hello ARIA World" ref={reftocanvas}><p>Hello Fallback World</p></canvas>
         </div>
     );

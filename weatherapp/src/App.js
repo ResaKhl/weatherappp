@@ -226,7 +226,7 @@ export class Home extends Component{
             <div>
               <ul class="nav nav-tabs sectionnav" style={{ listStyleType: 'None'}}>
                   <li className='sectionnav nav-item'>
-                    <Link to="/current" className='nav-link'>Current</Link>
+                    <Link to="/Current" className='nav-link'>Current</Link>
                   </li>
                   <li className='sectionnav nav-item'>
                     <Link to="/hourly" className='nav-link'>Hourly</Link>

@@ -33,10 +33,12 @@ class Posts extends Component{
          (
             <div>
                 <table style={tablestyle}>
+                    <tbody>
                     <tr><th><td>index</td><td id='posttile'>title</td><td id='postbody'>body</td></th></tr>
                     <tr>
                         {posts.map((post, i)=><TableRow key={i} post={post}></TableRow>)}
                     </tr>
+                    </tbody>
                 </table>
             </div>
         );

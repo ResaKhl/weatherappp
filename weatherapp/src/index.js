@@ -5,7 +5,7 @@ import Home from './App';
 import MyComponent from "./WeatherComponents/Posts";
 import Post from "./WeatherComponents/singlepost";
 import Users from "./WeatherComponents/Users";
-
+import axios from 'axios';
 import {
     BrowserRouter as Router,
     Switch,
@@ -22,18 +22,27 @@ ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
 
 export default function App() {
-  const [users, setUsers] = useState([]);
-  useEffect(()=>{
-    console.log('gavvvvvvvvvvvvv');
-    fetch('http://jsonplaceholder.typicode.com/users')
-      .then(res=>res.json())
-      .then((data)=>{
-        this.setState({users:data});
-        console.log('tokhm', data)
-      })
-      .catch(console.log);
-  });
-  console.log(users, 'loooooooooooooooooo');
+  // const [data, setData] = useState([]);
+  // async function fetchData() {
+  //   const res = await fetch("'http://jsonplaceholder.typicode.com/users");
+  //   res
+  //     .json()
+  //     .then(res => setPlanets(res))
+  //     .catch(err => setErrors(err));
+  // }
+  // useEffect(async ()=>{
+  //   const res = await axios('http://jsonplaceholder.typicode.com/users');
+  //   setData(data);
+  //   console.log(data, 'gavvvvvvvvvvvvv')
+  //   // fetch('http://jsonplaceholder.typicode.com/users')
+  //   //   .then(res=>res.json())
+  //   //   .then((data)=>{
+  //   //     this.setState({users:data});
+  //   //     console.log('tokhm', data)
+  //   //   })
+  //   //   .catch(console.log);
+  // }, []);
+  // console.log(data, 'loooooooooooooooooo');
     return (
       <Router>
         <div>
@@ -67,7 +76,7 @@ export default function App() {
               <About />
             </Route>
             <Route path="/users">
-              <Users users={users}/>
+              <Users/>
             </Route>
             <Route path="/">
               <Home />
