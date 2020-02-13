@@ -41,6 +41,7 @@ export class Home extends Component{
       customers : [],
       fetchedweather : false,
       weatherstates : {},
+      showbar:false,
     }
     this.updateStreet = this.updateStreet.bind(this);
     this.updateCity = this.updateCity.bind(this);
@@ -103,6 +104,7 @@ export class Home extends Component{
   }
   submitform(e){
     e.preventDefault();
+    this.setState({showbar:true});
     if(this.state.currLoc){
     fetch('http://ip-api.com/json')
       .then(res=>res.json())
@@ -112,7 +114,9 @@ export class Home extends Component{
           .then((data)=>
           {this.setState({
             fetchedweather : true,
-            weatherstates:data});
+            weatherstates:data,
+            showbar:false,
+          });
             console.log(data);
           });
   console.log(data);} 
@@ -134,12 +138,15 @@ export class Home extends Component{
   }
   submitPostlatlong(e){
     e.preventDefault();
+    this.setState({showbar:true});
     const uri = `http://localhost:5000/weather/lat/${this.state.lat}/long/${this.state.long}`
     fetch(uri).then(res=>res.json())
       .then((data)=>
       { this.setState({
         fetchedweather : true,
-        weatherstates:data});
+        weatherstates:data,
+        showbar:false,
+      });
         console.log(data);
       }
     )
@@ -207,13 +214,13 @@ export class Home extends Component{
           <input type='submit' className='submitbutton btn btn-success btn-sm col-sm-3' id ='clear' value='clear' onClick={this.updateClear}/>
           </div>
         </form>
-        <div className='userspart'>
+        {/* <div className='userspart'>
           <table>
             <tbody>
               {this.state.users.map((user, id)=><TableRow user={user} key={id}></TableRow>)}
             </tbody>
           </table>
-        </div>
+        </div> */}
         <div className='userspart' id='customers'>
         {rendercustomer ? <h3>is loading...</h3>:
         <table>
@@ -229,9 +236,10 @@ export class Home extends Component{
           <h5>city value is:</h5>{this.state.city}
           <h5>currState value is:</h5>{this.state.currState}
         </div> */}
-        <div class="progress col-10" style={{marginLeft:'100px'}}>
+        {this.state.showbar?<div class="progress col-10" style={{marginLeft:'100px'}}>
           <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style={{width: '75%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+        </div>:''
+        }
         {!this.state.fetchedweather ? <h3>is loading weather status...</h3> :
         <div>
           <Router>
