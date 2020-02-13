@@ -229,6 +229,9 @@ export class Home extends Component{
           <h5>city value is:</h5>{this.state.city}
           <h5>currState value is:</h5>{this.state.currState}
         </div> */}
+        <div class="progress col-10" style={{marginLeft:'100px'}}>
+          <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style={{width: '75%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
         {!this.state.fetchedweather ? <h3>is loading weather status...</h3> :
         <div>
           <Router>
