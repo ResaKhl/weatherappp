@@ -49,7 +49,7 @@ app.get('/weather/lat/:latval/long/:long', (req, res, next) => {
   //   }
   //   res.send(JSON.parse(body));
   // }))
-  fetch('http://ip-api.com/json').then(res=>res.json()).then(data=>request(`${url}${data.lat},${data.lon}`, (error, response, body)=>{
+  fetch('http://ip-api.com/json').then(res=>res.json()).then(data=>request(`${url}${req.params.latval},${req.params.long}`, (error, response, body)=>{
     if (error || response.statusCode !== 200) {
       return res.status(500).json({ type: 'error', message: err.message });
     }

@@ -46,6 +46,7 @@ export class Home extends Component{
       weatherstates : {},
       showbar:false,
       showfavorite:false,
+      favoriteData:[],
     }
     this.updateStreet = this.updateStreet.bind(this);
     this.updateCity = this.updateCity.bind(this);
@@ -55,6 +56,7 @@ export class Home extends Component{
     this.submitform = this.submitform.bind(this);
     this.updatelatlong = this.updatelatlong.bind(this);
     this.submitPostlatlong = this.submitPostlatlong.bind(this);
+    this.addfavorite = this.addfavorite.bind(this);
     this.textInputStreet = React.createRef();
   }
 
@@ -121,7 +123,7 @@ export class Home extends Component{
             weatherstates:data,
             showbar:false,
           });
-            console.log(data);
+            console.log(data, 'weatherstates');
           });
   console.log(data);} 
       )
@@ -135,7 +137,7 @@ export class Home extends Component{
         {this.setState({
           fetchedweather : true,
           weatherstates:data});
-          console.log(data);
+          console.log(data , 'weatherstates');
         }
       )
     }
@@ -152,7 +154,7 @@ export class Home extends Component{
         weatherstates:data,
         showbar:false,
       });
-        console.log(data);
+        console.log(data, 'weatherstates');
       }
     )
   }  
@@ -162,7 +164,12 @@ export class Home extends Component{
   clickresults(e){
     this.setState({showfavorite:false});
   }
-
+  addfavorite(e){
+    console.log('favdata', this.state.favoriteData, this.state.weatherstates);
+    let newfav=[...this.state.favoriteData];
+    newfav.push({'weatherstate':this.state.weatherstate});
+    this.setState({favoriteData:newfav});
+  }
   render(){
     let testStyle = {
       'marginTop':'50px',
@@ -172,10 +179,8 @@ export class Home extends Component{
 
     return (
       <div className="App">
-        <form className='weatherform'>
-          
+        <form className='weatherform mb-5'>
           <h1>Weather Search</h1>
-
           <div id='street' className='inputpart input-group mb-3'>
           <div className="input-group-prepend">
           <span className="input-group-text" id="inputGroup-sizing-sm">street</span>
@@ -227,14 +232,7 @@ export class Home extends Component{
           <input type='submit' className='submitbutton btn btn-success btn-sm col-sm-3' id ='clear' value='clear' onClick={this.updateClear}/>
           </div>
         </form>
-        {/* <div className='userspart'>
-          <table>
-            <tbody>
-              {this.state.users.map((user, id)=><TableRow user={user} key={id}></TableRow>)}
-            </tbody>
-          </table>
-        </div> */}
-        <div className='userspart' id='customers'>
+        {/* <div className='userspart' id='customers'>
         {rendercustomer ? <h3>is loading...</h3>:
         <table>
         <tbody>
@@ -242,7 +240,14 @@ export class Home extends Component{
         </tbody>
         </table> 
         }
-        </div>
+        </div> */}
+        {/* <div className='userspart'>
+          <table>
+            <tbody>
+              {this.state.users.map((user, id)=><TableRow user={user} key={id}></TableRow>)}
+            </tbody>
+          </table>
+        </div> */}
         {/* <div>
           <h1 style={testStyle}>Test</h1>
           <h5>street value is:</h5>{this.state.street}
@@ -258,8 +263,6 @@ export class Home extends Component{
         </div>
         :''
         }
-
-
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarText">
               <ul class="navbar-nav mr-auto">
@@ -291,6 +294,7 @@ export class Home extends Component{
           <ShowTab fetchedweather={fetchedweather}
                     showfavorite={showfavorite}
                     weatherstates={weatherstates}
+                    addfavorite={this.addfavorite}
           />
 
       </div>
@@ -308,7 +312,7 @@ function FavoriteTab(props){
 
 function ShowTab(props){
   if(!props.fetchedweather) return '';
-  if(props.fetchedweather&&!props.showfavorite) return (<ResultTab weatherstates={props.weatherstates}/>);
+  if(props.fetchedweather&&!props.showfavorite) return (<ResultTab weatherstates={props.weatherstates} addfavorite={props.addfavorite}/>);
   return <FavoriteTab/>;
 }
 function ResultTab(props){
@@ -329,8 +333,8 @@ function ResultTab(props){
             <li class="sectionnav nav-item" style={{marginLeft:'30em'}}>
             <button className='nav-link'>star</button>
             </li>
-            <li class="sectionnav nav-item" style={{marginLeft:'-1em'}}>
-              <button className='nav-link'>fav</button>
+            <li class="sectionnav nav-item" style={{marginLeft:'-1em'}} >
+              <button className='nav-link' onClick={e=>props.addfavorite(e)}>fav</button>
             </li>
         </ul>
         </div>
