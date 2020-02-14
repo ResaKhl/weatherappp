@@ -14,6 +14,9 @@ import { Button } from 'react-bootstrap';
 import Current from './WeatherComponents/Current';
 import Hourly from './WeatherComponents/Hourly';
 
+import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
+
+
 
 export class Home extends Component{
   constructor(props){
@@ -42,6 +45,7 @@ export class Home extends Component{
       fetchedweather : false,
       weatherstates : {},
       showbar:false,
+      showfavorite:false,
     }
     this.updateStreet = this.updateStreet.bind(this);
     this.updateCity = this.updateCity.bind(this);
@@ -136,6 +140,7 @@ export class Home extends Component{
       )
     }
   }
+
   submitPostlatlong(e){
     e.preventDefault();
     this.setState({showbar:true});
@@ -150,17 +155,25 @@ export class Home extends Component{
         console.log(data);
       }
     )
+  }  
+  clickfavorite(e){
+    this.setState({showfavorite:true});
   }
-  
+  clickresults(e){
+    this.setState({showfavorite:false});
+  }
+
   render(){
     let testStyle = {
       'marginTop':'50px',
     }
     const rendercustomer = this.state.loadingcustomers;
-    const weatherstates = this.state.weatherstates;
+    const [weatherstates, showfavorite, fetchedweather] = [this.state.weatherstates, this.state.showfavorite, this.state.fetchedweather];
+
     return (
       <div className="App">
         <form className='weatherform'>
+          
           <h1>Weather Search</h1>
 
           <div id='street' className='inputpart input-group mb-3'>
@@ -236,45 +249,50 @@ export class Home extends Component{
           <h5>city value is:</h5>{this.state.city}
           <h5>currState value is:</h5>{this.state.currState}
         </div> */}
-        {this.state.showbar?<div class="progress col-10" style={{marginLeft:'100px'}}>
-          <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style={{width: '75%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>:''
-        }
-        {!this.state.fetchedweather ? <h3>is loading weather status...</h3> :
+        {this.state.showbar?
         <div>
-          <Router>
-            <div>
-              <ul class="nav nav-tabs sectionnav" style={{ listStyleType: 'None'}}>
-                  <li className='sectionnav nav-item'>
-                    <Link to="/Current" className='nav-link'>Current</Link>
-                  </li>
-                  <li className='sectionnav nav-item'>
-                    <Link to="/hourly" className='nav-link'>Hourly</Link>
-                  </li>
-                  <li className='sectionnav nav-item'>
-                    <Link to="/weekly" className='nav-link'>Weekly</Link>
-                  </li>
+          <div class="progress col-10" style={{marginLeft:'100px'}}>
+            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style={{width: '75%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <h3>is loading weather status...</h3>
+        </div>
+        :''
+        }
+
+
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Pricing</a>
+                </li>
               </ul>
-      
-              {/* A <Switch> looks through its children <Route>s and
-                  renders the first one that matches the current URL. */}
-              <div className='retrieved-data'>
-              <Switch>
-                <Route path="/Current">
-                  <Current weatherinfo={weatherstates}/>
-                </Route>
-                <Route path="/Hourly">
-                  <Hourly weatherinfo={weatherstates}/>
-                </Route>
-                <Route path="/Weekly">
-                  <Weekly weatherinfo={weatherstates}/>
-                </Route>
-              </Switch>
-              </div>
+              <span class="navbar-text">
+                Navbar text with an inline element
+              </span>
             </div>
-        </Router>
-      </div>
-      }
+          </nav>
+
+
+          <div className='d-flex justify-content-center flex-row p-2' id='customers'>
+            <button type="button" class={`btn ${!this.state.showfavorite?'btn-primary':'btn-outline-secondary'} mr-2`} onClick={(e)=>this.clickresults(e)}>Results</button>
+            <button type="button" class={`btn ${this.state.showfavorite?'btn-primary':'btn-outline-secondary'}`} onClick={(e)=>this.clickfavorite(e)}>Favorites</button>
+          </div>
+        
+          {/* {!this.state.fetchedweather ? '' :
+              <div>{JSON.stringify(this.state.showfavorite)}<ResultTab weatherstates={weatherstates}/></div>
+          } */}
+          <ShowTab fetchedweather={fetchedweather}
+                    showfavorite={showfavorite}
+                    weatherstates={weatherstates}
+          />
+
       </div>
     );
   }
@@ -284,6 +302,57 @@ function Weekly(props) {
   return <h2>Weekly</h2>;
 }
 
+function FavoriteTab(props){
+  return (<div>dudul</div>);
+}
+
+function ShowTab(props){
+  if(!props.fetchedweather) return '';
+  if(props.fetchedweather&&!props.showfavorite) return (<ResultTab weatherstates={props.weatherstates}/>);
+  return <FavoriteTab/>;
+}
+function ResultTab(props){
+  return (<div>
+    <Router>
+      <div>
+        <div>
+        <ul class="nav nav-tabs sectionnav" style={{ listStyleType: 'None'}}>
+            <li className='sectionnav nav-item'>
+              <Link to="/Current" className='nav-link'>Current</Link>
+            </li>
+            <li className='sectionnav nav-item'>
+              <Link to="/hourly" className='nav-link'>Hourly</Link>
+            </li>
+            <li className='sectionnav nav-item'>
+              <Link to="/weekly" className='nav-link'>Weekly</Link>
+            </li>
+            <li class="sectionnav nav-item" style={{marginLeft:'30em'}}>
+            <button className='nav-link'>star</button>
+            </li>
+            <li class="sectionnav nav-item" style={{marginLeft:'-1em'}}>
+              <button className='nav-link'>fav</button>
+            </li>
+        </ul>
+        </div>
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <div className='retrieved-data'>
+        <Switch>
+          <Route path="/Current">
+            <Current weatherinfo={props.weatherstates}/>
+          </Route>
+          <Route path="/Hourly">
+            <Hourly weatherinfo={props.weatherstates}/>
+          </Route>
+          <Route path="/Weekly">
+            <Weekly weatherinfo={props.weatherstates}/>
+          </Route>
+        </Switch>
+        </div>
+      </div>
+  </Router>
+</div>);
+}
 
 
 export const TableRow = (props)=> {

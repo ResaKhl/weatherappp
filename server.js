@@ -16,8 +16,7 @@ app.get('/api/customers', (req, res) => {
     {id: 2, firstName: 'Brad', lastName: 'Traversy'},
     {id: 3, firstName: 'Mary', lastName: 'Swanson'},
   ];
-
-  res.json(JSON.parse(customers));
+  res.json(customers);
 });
 
 app.get('/api/pilots', (req, res) => {

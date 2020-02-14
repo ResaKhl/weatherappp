@@ -29,7 +29,7 @@ class Posts extends Component{
             border:'1px solid black',
         };
         // return <div></div>;
-        return !isLoaded ? (<h6>kir IS LOADING...</h6>):
+        return !isLoaded ? (<h6>IS LOADING...</h6>):
          (
             <div>
                 <table style={tablestyle}>
